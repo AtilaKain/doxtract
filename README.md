@@ -92,7 +92,6 @@ doxtract/
 
 ## 🆘 Support
 
-- 📖 **Documentation**: [VERCEL-CLOUDRUN-DEPLOY.md](VERCEL-CLOUDRUN-DEPLOY.md)
 - 🐛 **Issues**: GitHub Issues
 - 💬 **Discussions**: GitHub Discussions
 - 📧 **Contact**: [@Shreyas_Pandeyy](https://x.com/Shreyas_Pandeyy)
