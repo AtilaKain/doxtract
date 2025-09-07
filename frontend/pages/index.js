@@ -209,7 +209,7 @@ export default function Home() {
               </div>
             </div>
             <div className="footer-bottom">
-              <p>&copy; 2024 DoxTract. Built for document processing needs.</p>
+              <p>&copy; 2025 DoxTract. Built for document processing needs.</p>
             </div>
           </div>
         </footer>
