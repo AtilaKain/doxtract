@@ -1,0 +1,66 @@
+# Build outputs
+build/
+dist/
+
+# Deployment artifacts
+backend-url.txt
+deployment-config.json
+cloudbuild-local.yaml
+deploy-config.json
+
+# Security - CRITICAL: Never expose these
+.env.*
+!.env.example
+*.key
+*.pem
+secrets/
+credentials/
+service-account*.json
+gcp-*.json
+
+# Logs and debugging
+*.log
+logs/
+debug/
+temp-uploads/
+uploads/
+outputs/
+
+# Backup files
+*.backup
+*.bak
+*.old
+*~
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.coverage
+.pytest_cache/
+.tox/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+env.local
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Node modules (if any)
+node_modules/
+

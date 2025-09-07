@@ -1,0 +1,108 @@
+<<<<<<< HEAD
+# Git files
+.git
+.gitignore
+
+# Python cache files
+=======
+# Python
+>>>>>>> 08702ffe1a9d8d91e450fb43d2412c2cf4f6020d
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+<<<<<<< HEAD
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE files
+=======
+env/
+venv/
+ENV/
+
+# IDE
+>>>>>>> 08702ffe1a9d8d91e450fb43d2412c2cf4f6020d
+.vscode/
+.idea/
+*.swp
+*.swo
+<<<<<<< HEAD
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Testing
+.coverage
+.pytest_cache/
+.tox/
+
+# Documentation
+docs/
+*.md
+
+# Example and test files
+examples/
+tests/
+test_*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Frontend files (not needed in backend container)
+../frontend/
+../templates/
+../app.py
+../vercel.json
+=======
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile*
+.dockerignore
+
+# Development
+*.log
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary files
+*.tmp
+*.temp
+uploads/
+>>>>>>> 08702ffe1a9d8d91e450fb43d2412c2cf4f6020d

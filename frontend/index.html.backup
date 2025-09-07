@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoxTract - Professional Document Extraction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --accent-color: #0ea5e9;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 25px 50px -12px rgba(9, 5, 5, 0.25);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-nav {
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+        }
+
+        .container {
+            background: var(--surface);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            padding: 3rem;
+            max-width: 700px;
+            width: 100%;
+            border: 1px solid var(--border-color);
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .upload-area {
+            background: #f8fafc;
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: #f1f5f9;
+        }
+
+        .upload-area.dragover {
+            border-color: var(--primary-color);
+            background: #eff6ff;
+            transform: scale(1.02);
+        }
+
+        .upload-content {
+            text-align: center;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .upload-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .upload-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .file-info {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .options-section {
+            margin: 2rem 0;
+        }
+
+        .option-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .option-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .option-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .option-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .convert-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .convert-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .convert-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .result-section {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .nav-content {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .container {
+                padding: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation Header -->
+        <nav class="header-nav">
+            <div class="nav-content">
+                <div class="logo">
+                    <i class="fas fa-file-export"></i>
+                    DoxTract
+                </div>
+                <ul class="nav-links">
+                    <li><a href="https://github.com/Shreyas-prog108/doxtract" target="_blank">Features</a></li>
+                    <li><a href="https://github.com/Shreyas-prog108/doxtract" target="_blank">API Docs</a></li>
+                    <li><a href="https://x.com/Shreyas_Pandeyy" target="_blank">Support</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Hero Section -->
+                <div class="hero-section">
+                    <div class="hero-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h1 class="hero-title">DoxTract</h1>
+                    <p class="hero-subtitle">
+                        Professional document extraction service. Convert PDF, TXT, and DOCX files 
+                        to structured JSON format with enterprise-grade accuracy.
+                    </p>
+                </div>
+
+                <!-- Upload Area -->
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-title">Drop your document here</div>
+                        <div class="upload-subtitle">or click to browse files</div>
+                        <input type="file" id="pdfFile" class="file-input" accept=".pdf,.txt,.docx">
+                        <button type="button" class="upload-button" onclick="document.getElementById('pdfFile').click()">
+                            <i class="fas fa-file-plus"></i>
+                            Choose Document
+                        </button>
+                        <div class="upload-subtitle" style="margin-top: 1rem; font-size: 0.875rem;">
+                            Supports PDF, TXT, and DOCX files (max 50MB)
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="fileInfo" class="file-info">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-file-alt" style="color: var(--primary-color);"></i>
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-primary);">
+                                <span id="fileName"></span>
+                            </div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                                <span id="fileSize"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Options Section -->
+                <div class="options-section">
+                    <div class="option-group">
+                        <label for="maxPages" class="option-label">
+                            <i class="fas fa-layer-group"></i>
+                            Maximum Pages to Process
+                        </label>
+                        <input type="number" id="maxPages" class="option-input" min="1" placeholder="Leave empty to process all pages">
+                        <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                            Limit the number of pages to extract (optional)
+                        </div>
+                    </div>
+                </div>
+
+                <button id="convertBtn" class="convert-button" disabled>
+                    <i class="fas fa-magic"></i>
+                    Extract to JSON
+                </button>
+
+                <!-- Progress Section -->
+                <div id="progressSection" class="progress-section">
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                    <div style="text-align: center; color: var(--text-secondary); margin-top: 0.5rem;">
+                        <i class="fas fa-cog fa-spin" style="margin-right: 0.5rem;"></i>
+                        <span id="progressText">Processing your document...</span>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div id="resultSection" class="result-section">
+                    <div id="messageContainer"></div>
+                    <div id="resultActions" style="display: none; text-align: center; margin-top: 1.5rem;">
+                        <button id="resetBtn" class="upload-button" style="width: auto;">
+                            <i class="fas fa-redo"></i>
+                            Convert Another Document
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+                <div style="display: flex; justify-content: center; align-items: center; gap: 2rem; margin-bottom: 1rem;">
+                    <div style="font-weight: 600; color: var(--primary-color);">
+                        <i class="fas fa-file-export"></i>
+                        DoxTract
+                    </div>
+                    <span>•</span>
+                    <a href="https://github.com/Shreyas-prog108/doxtract" target="_blank" style="color: var(--text-secondary); text-decoration: none;">API Documentation</a>
+                    <span>•</span>
+                    <a href="https://x.com/Shreyas_Pandeyy" target="_blank" style="color: var(--text-secondary); text-decoration: none;">Support</a>
+                </div>
+                <div style="text-align: center; font-size: 0.875rem; color: var(--text-secondary); margin-top: 1rem;">
+                    <span>© 2025 DoxTract. Professional document extraction service.</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Configuration - Backend URL (injected at build time)
+        const API_BASE_URL = (() => {
+            // Development: Use local backend
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return 'http://localhost:8080';
+            }
+            
+            // Production: This URL is injected by build process from environment variables
+            return 'https://your-backend-url.run.app';
+        })();
+        
+        // DOM Elements
+        const fileInput = document.getElementById('pdfFile');
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const convertBtn = document.getElementById('convertBtn');
+        const maxPagesInput = document.getElementById('maxPages');
+        const progressSection = document.getElementById('progressSection');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const resultSection = document.getElementById('resultSection');
+        const messageContainer = document.getElementById('messageContainer');
+        const resultActions = document.getElementById('resultActions');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Drag and Drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (isValidFileType(file)) {
+                    fileInput.files = files;
+                    handleFileSelection(file);
+                } else {
+                    showError('Please select a PDF, TXT, or DOCX file');
+                }
+            }
+        });
+
+        // Click to upload
+        uploadArea.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'BUTTON') {
+                fileInput.click();
+            }
+        });
+
+        function isValidFileType(file) {
+            const allowedTypes = ['.pdf', '.txt', '.docx'];
+            const fileName = file.name.toLowerCase();
+            return allowedTypes.some(type => fileName.endsWith(type));
+        }
+
+        function handleFileSelection(file) {
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            fileInfo.style.display = 'block';
+            convertBtn.disabled = false;
+            
+            // Add smooth reveal animation
+            fileInfo.style.opacity = '0';
+            fileInfo.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                fileInfo.style.transition = 'all 0.3s ease';
+                fileInfo.style.opacity = '1';
+                fileInfo.style.transform = 'translateY(0)';
+            }, 10);
+        }
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFileSelection(file);
+            } else {
+                resetFileSelection();
+            }
+        });
+
+        function resetFileSelection() {
+            fileInfo.style.display = 'none';
+            convertBtn.disabled = true;
+            maxPagesInput.value = '';
+            resultSection.style.display = 'none';
+        }
+
+        convertBtn.addEventListener('click', function() {
+            const file = fileInput.files[0];
+            if (!file) {
+                showError('Please select a document file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            const maxPages = maxPagesInput.value;
+            if (maxPages) {
+                formData.append('max_pages', maxPages);
+            }
+
+            showProgress();
+            
+            fetch(`${API_BASE_URL}/api/upload`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                hideProgress();
+                if (response.ok) {
+                    // Get filename from response headers or use default
+                    const contentDisposition = response.headers.get('Content-Disposition');
+                    let filename = 'converted.json';
+                    if (contentDisposition) {
+                        const matches = contentDisposition.match(/filename="?([^"]+)"?/);
+                        if (matches) {
+                            filename = matches[1];
+                        }
+                    }
+                    
+                    // Download the file directly
+                    return response.blob().then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                        
+                        showSuccess({
+                            message: 'Document converted and downloaded successfully!',
+                            filename: filename
+                        });
+                    });
+                } else {
+                    return response.json().then(data => {
+                        showError(data.error || data.detail || 'Conversion failed');
+                    }).catch(() => {
+                        showError('Conversion failed - please try again');
+                    });
+                }
+            })
+            .catch(error => {
+                hideProgress();
+                console.error('Error:', error);
+                showError('Network error: ' + error.message);
+            });
+        });
+
+        resetBtn.addEventListener('click', function() {
+            // Reset all form elements
+            fileInput.value = '';
+            resetFileSelection();
+            
+            // Add smooth fade out animation for result section
+            resultSection.style.transition = 'all 0.3s ease';
+            resultSection.style.opacity = '0';
+            resultSection.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                resultSection.style.display = 'none';
+                resultSection.style.transform = 'translateY(0)';
+            }, 300);
+        });
+
+        function showProgress() {
+            progressSection.style.display = 'block';
+            resultSection.style.display = 'none';
+            convertBtn.disabled = true;
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 30;
+                if (progress > 90) {
+                    clearInterval(interval);
+                    progress = 90;
+                }
+                progressFill.style.width = progress + '%';
+            }, 200);
+        }
+
+        function hideProgress() {
+            progressSection.style.display = 'none';
+            progressFill.style.width = '100%';
+            convertBtn.disabled = false;
+        }
+
+        function showSuccess(data) {
+            messageContainer.innerHTML = `
+                <div class="success-message">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <div style="width: 48px; height: 48px; background: var(--success-color); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check" style="color: white; font-size: 1.25rem;"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: var(--success-color); font-size: 1.25rem;">Extraction Successful!</h3>
+                            <p style="margin: 0; color: #166534; font-size: 0.875rem;">Your document has been processed and downloaded</p>
+                        </div>
+                    </div>
+                    <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px; font-size: 0.875rem;">
+                        <div><strong>File:</strong> ${data.filename}</div>
+                        <div style="margin-top: 0.25rem;"><strong>Status:</strong> ${data.message}</div>
+                    </div>
+                </div>
+            `;
+            
+            resultActions.style.display = 'block';
+            resultSection.style.display = 'block';
+            
+            // Add smooth reveal animation
+            resultSection.style.opacity = '0';
+            resultSection.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                resultSection.style.transition = 'all 0.4s ease';
+                resultSection.style.opacity = '1';
+                resultSection.style.transform = 'translateY(0)';
+            }, 10);
+        }
+
+        function showError(message) {
+            messageContainer.innerHTML = `
+                <div class="error-message">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <div style="width: 48px; height: 48px; background: var(--error-color); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-exclamation-triangle" style="color: white; font-size: 1.25rem;"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: var(--error-color); font-size: 1.25rem;">Processing Failed</h3>
+                            <p style="margin: 0; color: #dc2626; font-size: 0.875rem;">Please check your file and try again</p>
+                        </div>
+                    </div>
+                    <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; font-size: 0.875rem;">
+                        ${message}
+                    </div>
+                </div>
+            `;
+            
+            resultActions.style.display = 'block';
+            resultSection.style.display = 'block';
+            
+            // Add smooth reveal animation
+            resultSection.style.opacity = '0';
+            resultSection.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                resultSection.style.transition = 'all 0.4s ease';
+                resultSection.style.opacity = '1';
+                resultSection.style.transform = 'translateY(0)';
+            }, 10);
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Check if API_BASE_URL is configured for production
+        if (API_BASE_URL.includes('your-backend-url.run.app')) {
+            console.warn('Please update the production backend URL in the JavaScript code with your actual Cloud Run backend URL');
+        }
+        
+        console.info(`Using API endpoint: ${API_BASE_URL}`);
+    </script>
+</body>
+</html>

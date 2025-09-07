@@ -1,0 +1,18 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="16" cy="16" r="15" fill="#2563eb" stroke="#1d4ed8" stroke-width="2"/>
+  
+  <!-- Document Icon -->
+  <rect x="9" y="7" width="10" height="14" rx="1" fill="white"/>
+  <rect x="11" y="9" width="6" height="1" fill="#2563eb"/>
+  <rect x="11" y="11" width="6" height="1" fill="#2563eb"/>
+  <rect x="11" y="13" width="4" height="1" fill="#2563eb"/>
+  <rect x="11" y="15" width="5" height="1" fill="#2563eb"/>
+  
+  <!-- Arrow pointing right (transform) -->
+  <path d="M20 12 L23 16 L20 20" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- JSON brackets -->
+  <text x="24" y="12" font-family="monospace" font-size="6" fill="white">{</text>
+  <text x="24" y="20" font-family="monospace" font-size="6" fill="white">}</text>
+</svg>
