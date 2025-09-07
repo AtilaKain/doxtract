@@ -45,17 +45,24 @@ app = FastAPI(
 )
 
 # CORS configuration - Allow your Vercel frontend
+# Prefer explicit domains via FRONTEND_ORIGINS env (comma-separated).
+# Additionally, allow any Vercel subdomain via regex.
+frontend_origins_env = os.getenv("FRONTEND_ORIGINS", "").strip()
+explicit_origins = [o.strip() for o in frontend_origins_env.split(",") if o.strip()]
+
+default_local_origins = [
+    "http://localhost:3000",
+    "http://localhost:8000",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:8000", 
-        "https://*.vercel.app",  # Allow all Vercel apps
-        "https://your-app-name.vercel.app"  # Replace with your EXACT domain
-    ],
-    allow_credentials=False,  # Disabled for security
-    allow_methods=["GET", "POST", "OPTIONS"],  # Restricted methods
-    allow_headers=["Content-Type", "Authorization"],  # Restricted headers
+    allow_origins=default_local_origins + explicit_origins,
+    allow_origin_regex=r"https://.*\\.vercel\\.app",
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+    expose_headers=["Content-Disposition"],
 )
 
 # Security headers middleware
